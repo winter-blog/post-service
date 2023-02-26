@@ -1,12 +1,15 @@
 package com.devwinter.postservice.domain;
 
-import com.devwinter.postservice.domain.exception.PostException;
+import com.devwinter.postservice.common.exception.PostException;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-import static com.devwinter.postservice.domain.exception.PostErrorCode.POST_ALREADY_DELETED;
+import static com.devwinter.postservice.common.exception.PostErrorCode.POST_ALREADY_DELETED;
 
+
+@Getter
 public class Post extends AbstractHistory {
 
     private final PostId id;
@@ -18,7 +21,8 @@ public class Post extends AbstractHistory {
     private boolean deleted;
 
     @Builder
-    private Post(LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt, PostId id, MemberId memberId, String title, String contents, PostImageCollection postImageCollection, Category category, boolean deleted) {
+    private Post(PostId id, MemberId memberId, String title, String contents, PostImageCollection postImageCollection, Category category, boolean deleted,
+                 LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
         super(createdAt, modifiedAt, deletedAt);
         this.id = id;
         this.memberId = memberId;
@@ -43,5 +47,4 @@ public class Post extends AbstractHistory {
         deleted = true;
         setDeletedAt(LocalDateTime.now());
     }
-
 }
