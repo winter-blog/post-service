@@ -1,0 +1,43 @@
+package com.devwinter.postservice.adapter.output.persistence.entity;
+
+import com.devwinter.postservice.domain.Category;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "post")
+public class PostEntity extends BaseTimeEntity {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
+    private Long id;
+    @Column(nullable = false)
+    private Long memberId;
+    @Column(nullable = false)
+    private String title;
+    @Lob
+    @Column(nullable = false)
+    private String contents;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    @Embedded
+    private PostImageCollectionEmbedded postImageCollection;
+    private boolean deleted;
+
+    @Builder
+    private PostEntity(Long id, Long memberId, String title, String contents, Category category, PostImageCollectionEmbedded postImageCollection, boolean deleted) {
+        this.id = id;
+        this.memberId = memberId;
+        this.title = title;
+        this.contents = contents;
+        this.category = category;
+        this.postImageCollection = postImageCollection;
+        this.deleted = deleted;
+    }
+}
