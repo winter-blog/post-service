@@ -12,7 +12,10 @@ public enum PostErrorCode {
     MEMBER_NOT_VALID(HttpStatus.BAD_REQUEST, "잘못된 회원 정보입니다."),
     POST_TITLE_REQUIRED(HttpStatus.BAD_REQUEST, "제목은 필수 입력 값입니다."),
     POST_CONTENTS_REQUIRED(HttpStatus.BAD_REQUEST, "본문은 필수 입력 값입니다."),
-    POST_CATEGORY_REQUIRED(HttpStatus.BAD_REQUEST, "카테고리는 필수 입력 값입니다.")
+    POST_CATEGORY_REQUIRED(HttpStatus.BAD_REQUEST, "카테고리는 필수 입력 값입니다."),
+    POST_IMAGE_UPLOAD_EXTENSION_NOT_VALID(HttpStatus.BAD_REQUEST, "이미지 확장자가 잘못되었습니다."),
+    POST_IMAGE_UPLOAD_NOT_SUPPORT(HttpStatus.BAD_REQUEST, "지원하지 않는 확장자입니다."),
+    POST_IMAGE_NAME_EMPTY(HttpStatus.BAD_REQUEST, "업로드할 이미지의 이름이 업습니다.")
     ;
     private final HttpStatus httpStatus;
     private final String message;
