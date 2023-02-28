@@ -2,6 +2,8 @@ package com.devwinter.postservice.adapter.input.api;
 
 import com.devwinter.postservice.adapter.input.api.dto.BaseResponse;
 import com.devwinter.postservice.adapter.input.api.dto.CreatePost;
+import com.devwinter.postservice.adapter.input.api.dto.DeletePost;
+import com.devwinter.postservice.application.port.input.DeletePostUseCase;
 import com.devwinter.postservice.application.port.input.RegisterPostUseCase;
 import com.devwinter.postservice.application.port.input.RegisterPostUseCase.RegisterPostCommand;
 import jakarta.validation.Valid;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostApiController {
 
     private final RegisterPostUseCase registerPostUseCase;
+    private final DeletePostUseCase deletePostUseCase;
 
     @PostMapping
     public BaseResponse<CreatePost.Response> register(
@@ -30,5 +33,13 @@ public class PostApiController {
 
         Long postId = registerPostUseCase.register(command);
         return CreatePost.Response.success(postId);
+    }
+
+    @DeleteMapping("/{postId}")
+    public BaseResponse<DeletePost.Response> delete(
+            @RequestHeader("MemberId") Long memberId,
+            @PathVariable Long postId) {
+        deletePostUseCase.delete(new DeletePostUseCase.DeletePostCommand(memberId, postId));
+        return DeletePost.Response.success(postId);
     }
 }
