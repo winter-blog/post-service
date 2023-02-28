@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 @Mapper
 @RequiredArgsConstructor
-class PostMapper {
+public class PostMapper {
 
     private final PostImageMapper postImageMapper;
 
-    PostEntity domainToEntity(Post post) {
+    public PostEntity domainToEntity(Post post) {
         return PostEntity.builder()
                          .id((post.getId() != null) ? post.getId().value() : null)
                          .memberId(post.getMemberId().value())
@@ -25,7 +25,7 @@ class PostMapper {
                          .build();
     }
 
-    Post entityToDomain(PostEntity postEntity) {
+    public Post entityToDomain(PostEntity postEntity) {
         return Post.builder()
                    .id(new PostId(postEntity.getId()))
                    .memberId(new MemberId(postEntity.getMemberId()))

@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static com.devwinter.postservice.common.exception.PostErrorCode.POST_ALREADY_DELETED;
+import static com.devwinter.postservice.common.exception.PostErrorCode.POST_NOT_AUTHORITY;
 
 
 @Getter
@@ -46,5 +48,11 @@ public class Post extends AbstractHistory {
 
         deleted = true;
         setDeletedAt(LocalDateTime.now());
+    }
+
+    public void checkAuthority(Long memberId) {
+        if (!Objects.equals(this.memberId.value(), memberId)) {
+            throw new PostException(POST_NOT_AUTHORITY);
+        }
     }
 }
