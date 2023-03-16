@@ -17,7 +17,6 @@ public interface DetailPostQuery {
             String title,
             String contents,
             Category category,
-            boolean deleted,
             LocalDateTime createdAt
     ) {
 
@@ -28,7 +27,6 @@ public interface DetailPostQuery {
                                 .title(post.getTitle())
                                 .contents(post.getContents())
                                 .category(post.getCategory())
-                                .deleted(post.isDeleted())
                                 .createdAt(post.getCreatedAt())
                                 .build();
         }

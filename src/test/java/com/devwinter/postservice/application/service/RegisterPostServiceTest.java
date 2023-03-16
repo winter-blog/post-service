@@ -35,19 +35,20 @@ class RegisterPostServiceTest {
         // given
         RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete().build();
         Post post = PostMother.complete().build();
+        Long memberId = 1L;
 
         given(savePostPort.save(any())).willReturn(post);
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
         // when
-        Long postId = registerPostService.register(command);
+        Long postId = registerPostService.register(memberId, command);
 
         // then
         then(savePostPort).should().save(postArgumentCaptor.capture());
         assertNull(postArgumentCaptor.getValue().getId());
         assertThat(postArgumentCaptor.getValue().getTitle()).isEqualTo(command.title());
         assertThat(postArgumentCaptor.getValue().getContents()).isEqualTo(command.contents());
-        assertThat(postArgumentCaptor.getValue().getMemberId().value()).isEqualTo(command.memberId());
+        assertThat(postArgumentCaptor.getValue().getMemberId().value()).isEqualTo(memberId);
         assertThat(postArgumentCaptor.getValue().getCategory().name()).isEqualTo(command.category());
         assertThat(postArgumentCaptor.getValue().getPostImageCollection().getPostImages().size())
                 .isEqualTo(command.images().size());
@@ -61,19 +62,20 @@ class RegisterPostServiceTest {
         // given
         RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete().images(null).build();
         Post post = PostMother.complete().build();
+        Long memberId = 1L;
 
         given(savePostPort.save(any())).willReturn(post);
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
         // when
-        Long postId = registerPostService.register(command);
+        Long postId = registerPostService.register(memberId, command);
 
         // then
         then(savePostPort).should().save(postArgumentCaptor.capture());
         assertNull(postArgumentCaptor.getValue().getId());
         assertThat(postArgumentCaptor.getValue().getTitle()).isEqualTo(command.title());
         assertThat(postArgumentCaptor.getValue().getContents()).isEqualTo(command.contents());
-        assertThat(postArgumentCaptor.getValue().getMemberId().value()).isEqualTo(command.memberId());
+        assertThat(postArgumentCaptor.getValue().getMemberId().value()).isEqualTo(memberId);
         assertThat(postArgumentCaptor.getValue().getCategory().name()).isEqualTo(command.category());
         assertThat(postArgumentCaptor.getValue().getPostImageCollection().getPostImages().isEmpty()).isTrue();
         assertThat(postArgumentCaptor.getValue().isDeleted()).isFalse();

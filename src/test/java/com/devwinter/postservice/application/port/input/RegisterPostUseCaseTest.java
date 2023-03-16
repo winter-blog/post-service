@@ -13,14 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class RegisterPostUseCaseTest {
 
     @Test
-    @DisplayName("게시글 등록 시 memberId 유효성 검사 테스트")
-    void registerPostCommandMemberIdValidateTest() {
-        PostException e = assertThrows(PostException.class,
-                () -> RegisterPostCommandMother.complete().memberId(null).build());
-        assertThat(e.getErrorCode()).isEqualTo(MEMBER_NOT_VALID);
-    }
-
-    @Test
     @DisplayName("게시글 등록 시 title 유효성 검사 테스트")
     void registerPostCommandTitleValidateTest() {
         PostException e = assertThrows(PostException.class,
@@ -50,7 +42,6 @@ class RegisterPostUseCaseTest {
         RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete()
                                                                                  .images(null)
                                                                                  .build();
-        assertNotNull(command.memberId());
         assertNotNull(command.category());
         assertNotNull(command.title());
         assertNotNull(command.contents());

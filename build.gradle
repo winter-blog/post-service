@@ -1,6 +1,7 @@
 buildscript {
     ext {
         queryDslVersion = "5.0.0:jakarta"
+        restdocsApiSpecVersion = "0.17.1"
     }
 }
 
@@ -8,6 +9,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.4'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
 }
 
 group = 'com.devwinter'
@@ -46,13 +48,17 @@ dependencies {
 
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
-    // https://mvnrepository.com/artifact/commons-io/commons-io
+    // File 처리 관련 라이브러리
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 dependencyManagement {
@@ -67,4 +73,13 @@ tasks.named('test') {
 
 clean {
     delete file('src/main/generated')
+}
+
+openapi3 {
+    setServer("http://ec2-3-34-53-11.ap-northeast-2.compute.amazonaws.com:8080/post-service/")
+    title = "게시글 서비스 API"
+    description = "게시글 서비스 API 문서"
+    version = "v1"
+    format = "yaml"
+    outputFileNamePrefix = 'post-api-spec'
 }

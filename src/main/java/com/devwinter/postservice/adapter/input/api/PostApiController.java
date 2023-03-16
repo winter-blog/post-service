@@ -28,16 +28,7 @@ public class PostApiController {
     public BaseResponse<CreatePost.Response> register(
             @RequestHeader("MemberId") Long memberId,
             @Valid @RequestBody CreatePost.Request request) {
-
-        RegisterPostCommand command = RegisterPostCommand.builder()
-                                                         .memberId(memberId)
-                                                         .title(request.getTitle())
-                                                         .contents(request.getContents())
-                                                         .category(request.getCategory())
-                                                         .images(request.getImages())
-                                                         .build();
-
-        Long postId = registerPostUseCase.register(command);
+        Long postId = registerPostUseCase.register(memberId, request.toCommand());
         return CreatePost.Response.success(postId);
     }
 

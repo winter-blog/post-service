@@ -13,8 +13,9 @@ public class UploadImageService implements UploadImageUseCase {
     private final UploadImagePort uploadImagePort;
 
     @Override
-    public void upload(UploadImageCommand command) {
+    public String upload(UploadImageCommand command) {
         String target = String.format("%s.%s", UUID.randomUUID(), command.extension());
         uploadImagePort.upload(target, command.multipartFile());
+        return target;
     }
 }

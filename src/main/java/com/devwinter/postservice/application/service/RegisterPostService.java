@@ -14,9 +14,9 @@ public class RegisterPostService implements RegisterPostUseCase {
     private final SavePostPort savePostPort;
 
     @Override
-    public Long register(RegisterPostCommand command) {
+    public Long register(Long memberId, RegisterPostCommand command) {
         // 게시글 도메인 생성
-        Post post = PostFactory.create(command.memberId(), command.title(), command.contents(), command.category(), command.images());
+        Post post = PostFactory.create(memberId, command.title(), command.contents(), command.category(), command.images());
         return savePostPort.save(post).getId().value();
     }
 }

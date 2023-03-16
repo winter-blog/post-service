@@ -8,7 +8,6 @@ import java.util.List;
 public class RegisterPostCommandMother {
     public static RegisterPostUseCase.RegisterPostCommand.RegisterPostCommandBuilder complete() {
         return RegisterPostUseCase.RegisterPostCommand.builder()
-                                                      .memberId(1L)
                                                       .title("post title")
                                                       .contents("post contents")
                                                       .category(Category.IT.name())
