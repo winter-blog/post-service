@@ -1,5 +1,7 @@
 package com.devwinter.postservice.adapter.input.api;
 
+import com.devwinter.postservice.adapter.input.api.dto.BaseResponse;
+import com.devwinter.postservice.adapter.input.api.dto.UploadImage;
 import com.devwinter.postservice.application.port.input.UploadImageUseCase;
 import com.devwinter.postservice.application.port.input.UploadImageUseCase.UploadImageCommand;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,9 @@ public class ImageStorageApiController {
     private final UploadImageUseCase uploadImageUseCase;
 
     @PostMapping("/upload")
-    public void upload(@RequestPart(value = "image", required = true) MultipartFile image) {
+    public BaseResponse<UploadImage.Response> upload(@RequestPart(value = "image", required = true) MultipartFile image) {
         String extension = FilenameUtils.getExtension(image.getOriginalFilename());
-        uploadImageUseCase.upload(new UploadImageCommand(image, extension));
+        String path = uploadImageUseCase.upload(new UploadImageCommand(image, extension));
+        return UploadImage.Response.success(path);
     }
 }

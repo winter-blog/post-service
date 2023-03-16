@@ -9,7 +9,7 @@ import java.util.Objects;
 import static com.devwinter.postservice.common.exception.PostErrorCode.*;
 
 public interface UploadImageUseCase {
-    void upload(UploadImageCommand command);
+    String upload(UploadImageCommand command);
 
     enum ExtensionSupportType {
         JPEG,
