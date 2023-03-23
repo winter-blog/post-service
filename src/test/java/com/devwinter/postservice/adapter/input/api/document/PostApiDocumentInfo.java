@@ -4,7 +4,9 @@ public enum PostApiDocumentInfo {
     IMAGE_UPLOAD("이미지", "이미지 업로드", "이미지 업로드", "이미지 업로드 API", true),
     POST_REGISTER("게시글", "게시글 등록", "게시글 등록", "게시글 등록 API", true),
     POST_DELETE("게시글", "게시글 삭제", "게시글 삭제", "게시글 삭제 API", true),
-    POST_DETAIL_FIND("게시글", "게시글 상세 조회", "게시글 상세 조회", "게시글 상세 조회 API", true)
+    POST_DETAIL_FIND("게시글", "게시글 상세 조회", "게시글 상세 조회", "게시글 상세 조회 API", true),
+    POST_CATEGORY_FIND("게시글", "게시글 카테고리 조회", "게시글 카테고리 조회", "게시글 카테고리 조회 API", true),
+
     ;
 
     private final String tag;
