@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Category {
 
-    IT("IT");
+    IT("IT 카테고리");
 
     private final String description;
 }
