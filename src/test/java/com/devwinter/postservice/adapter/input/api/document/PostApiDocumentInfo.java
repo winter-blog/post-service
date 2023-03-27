@@ -6,6 +6,8 @@ public enum PostApiDocumentInfo {
     POST_DELETE("게시글", "게시글 삭제", "게시글 삭제", "게시글 삭제 API", true),
     POST_DETAIL_FIND("게시글", "게시글 상세 조회", "게시글 상세 조회", "게시글 상세 조회 API", true),
     POST_CATEGORY_FIND("게시글", "게시글 카테고리 조회", "게시글 카테고리 조회", "게시글 카테고리 조회 API", true),
+    POST_LIST_FIND("게시글", "게시글 목록 조회", "게시글 목록 조회", "게시글 목록 조회 API", true),
+
 
     ;
 

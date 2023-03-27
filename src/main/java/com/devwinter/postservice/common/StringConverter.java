@@ -9,7 +9,7 @@ public abstract class StringConverter {
     }
 
     public static String localDateTimeToLocalDateString(LocalDateTime localDateTime) {
-        return getDateTimeToString(localDateTime, "yyyy-MM-dd");
+        return getDateTimeToString(localDateTime, "yyyy년 MM월 dd일");
     }
 
 

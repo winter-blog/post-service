@@ -13,6 +13,7 @@ public interface UploadImageUseCase {
 
     enum ExtensionSupportType {
         JPEG,
+        JPG,
         GIF,
         PNG
     }

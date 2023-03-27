@@ -28,58 +28,78 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 public abstract class AbstractRestDocsManagement {
     protected RestDocumentationResultHandler document(
             PostApiDocumentInfo documentInfo,
-            Class<?> requestClass,
-            Class<?> responseClass,
-            List<FieldDescriptorDto> requestFields,
-            List<FieldDescriptorDto> responseFields) {
+            Class<?> requestBodyClass,
+            Class<?> responseBodyClass,
+            List<FieldDescriptorDto> requestBodyFields,
+            List<FieldDescriptorDto> responseBodyFields) {
 
         return MockMvcRestDocumentation.document(
                 documentInfo.getIdentifier(),
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 resource(
-                        snippet(documentInfo, requestClass, responseClass, requestFields, responseFields, null)
+                        snippet(documentInfo, requestBodyClass, responseBodyClass, requestBodyFields, responseBodyFields, null, null)
                 )
         );
     }
 
     protected RestDocumentationResultHandler document(
             PostApiDocumentInfo documentInfo,
-            Class<?> requestClass,
-            Class<?> responseClass,
-            List<FieldDescriptorDto> requestFields,
-            List<FieldDescriptorDto> responseFields,
-            List<ParameterDescriptorDto> parameterFields) {
+            Class<?> requestBodyClass,
+            Class<?> responseBodyClass,
+            List<FieldDescriptorDto> requestBodyFields,
+            List<FieldDescriptorDto> responseBodyFields,
+            List<ParameterDescriptorDto> pathParameterFields) {
 
         return MockMvcRestDocumentation.document(
                 documentInfo.getIdentifier(),
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 resource(
-                        snippet(documentInfo, requestClass, responseClass, requestFields, responseFields, parameterFields)
+                        snippet(documentInfo, requestBodyClass, responseBodyClass, requestBodyFields, responseBodyFields, pathParameterFields, null)
                 )
         );
     }
 
     protected RestDocumentationResultHandler document(
             PostApiDocumentInfo documentInfo,
-            Class<?> responseClass,
-            List<RequestPartDescriptor> requestParts,
-            List<FieldDescriptorDto> responseFields) {
+            Class<?> requestBodyClass,
+            Class<?> responseBodyClass,
+            List<FieldDescriptorDto> requestBodyFields,
+            List<FieldDescriptorDto> responseBodyFields,
+            List<ParameterDescriptorDto> pathParameterFields,
+            List<ParameterDescriptorDto> requestParamFields) {
 
         return MockMvcRestDocumentation.document(
                 documentInfo.getIdentifier(),
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParts(requestParts),
                 resource(
-                        snippet(documentInfo, StandardMultipartHttpServletRequest.class, responseClass, null, responseFields, null)
+                        snippet(documentInfo, requestBodyClass, responseBodyClass, requestBodyFields, responseBodyFields, pathParameterFields, requestParamFields)
+                )
+        );
+    }
+
+    protected RestDocumentationResultHandler document(
+            PostApiDocumentInfo documentInfo,
+            Class<?> responseBodyClass,
+            List<RequestPartDescriptor> requestPartsFields,
+            List<FieldDescriptorDto> responseBodyFields) {
+
+        return MockMvcRestDocumentation.document(
+                documentInfo.getIdentifier(),
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParts(requestPartsFields),
+                resource(
+                        snippet(documentInfo, StandardMultipartHttpServletRequest.class, responseBodyClass, null, responseBodyFields, null, null)
                 )
         );
     }
 
     private ResourceSnippetParameters snippet(PostApiDocumentInfo documentInfo, Class<?> requestClass, Class<?> responseClass, List<FieldDescriptorDto> requestFields, List<FieldDescriptorDto> responseFields,
-                                              List<ParameterDescriptorDto> parameterDescriptors) {
+                                              List<ParameterDescriptorDto> parameterDescriptors,
+                                              List<ParameterDescriptorDto> requestParamFields) {
 
         return ResourceSnippetParameters.builder()
                                         .tag(documentInfo.getTag())
@@ -94,6 +114,7 @@ public abstract class AbstractRestDocsManagement {
                                         .responseSchema((responseClass != null) ? schema(responseClass.getName()) : null)
                                         .requestFields((requestFields != null) ? fieldConverter(requestFields) : Collections.emptyList())
                                         .responseFields((responseFields != null) ? fieldConverter(responseFields) : Collections.emptyList())
+                                        .queryParameters((requestParamFields != null) ? parameterConverter(requestParamFields) : Collections.emptyList())
                                         .pathParameters((parameterDescriptors != null) ? parameterConverter(parameterDescriptors) : Collections.emptyList())
                                         .build();
     }

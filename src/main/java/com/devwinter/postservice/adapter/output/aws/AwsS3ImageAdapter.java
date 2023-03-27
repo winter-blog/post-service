@@ -28,10 +28,10 @@ public class AwsS3ImageAdapter implements UploadImagePort {
     private final AmazonS3Client amazonS3Client;
 
     @Override
-    public void upload(String target, MultipartFile multipartFile) {
+    public String upload(String target, MultipartFile multipartFile) {
         try {
             ObjectMetadata metaData = createMetaData(multipartFile);
-            uploadToAwsS3Storage(target, multipartFile, metaData);
+            return uploadToAwsS3Storage(target, multipartFile, metaData);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,11 +44,13 @@ public class AwsS3ImageAdapter implements UploadImagePort {
         return objectMetadata;
     }
 
-    private void uploadToAwsS3Storage(String target, MultipartFile multipartFile, ObjectMetadata metaData) throws FileUploadException {
+    private String uploadToAwsS3Storage(String target, MultipartFile multipartFile, ObjectMetadata metaData) throws FileUploadException {
         try (InputStream inputStream = multipartFile.getInputStream()) {
+            String path = postImagePrefix + target;
             amazonS3Client.putObject(
-                    new PutObjectRequest(bucket, postImagePrefix + target, inputStream, metaData)
+                    new PutObjectRequest(bucket, path, inputStream, metaData)
                             .withCannedAcl(CannedAccessControlList.PublicRead));
+            return path;
         } catch (IOException e) {
             throw new FileUploadException();
         }

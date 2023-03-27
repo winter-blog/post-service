@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostImageValueObject {
     private String path;
+    private int orderNumber;
 
     @Builder
-    private PostImageValueObject(String path) {
+    private PostImageValueObject(String path, int orderNumber) {
         this.path = path;
+        this.orderNumber = orderNumber;
     }
 }

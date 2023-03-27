@@ -6,10 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class PostImage {
-    private String path;
+    private final String path;
+    private final Integer orderNumber;
 
     @Builder
-    private PostImage(String path) {
+    private PostImage(String path, Integer orderNumber) {
         this.path = path;
+        this.orderNumber = orderNumber;
     }
 }

@@ -24,10 +24,11 @@ public class PostEntity extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false)
     private Long memberId;
+    private boolean memberActive;
     @Column(nullable = false)
     private String title;
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String contents;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -45,6 +46,7 @@ public class PostEntity extends BaseTimeEntity {
         this.category = category;
         this.postImageCollection = postImageCollection;
         this.deleted = deleted;
+        this.memberActive = true;
     }
 
     public void delete() {
