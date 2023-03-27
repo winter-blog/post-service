@@ -20,7 +20,6 @@ public class PostImageCollectionEmbedded {
                     @JoinColumn(name = "post_id")
             }
     )
-    @OrderColumn(name = "order_number")
     private List<PostImageValueObject> postImages = new ArrayList<>();
 
     @Builder

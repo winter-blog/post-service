@@ -6,6 +6,7 @@ import com.devwinter.postservice.adapter.input.api.dto.DeletePost;
 import com.devwinter.postservice.adapter.input.api.dto.DetailPost;
 import com.devwinter.postservice.application.port.input.DeletePostUseCase;
 import com.devwinter.postservice.application.port.input.DetailPostQuery;
+import com.devwinter.postservice.application.port.input.ListPostQuery;
 import com.devwinter.postservice.application.port.input.RegisterPostUseCase;
 import com.devwinter.postservice.domain.Category;
 import com.epages.restdocs.apispec.SimpleType;
@@ -30,14 +31,12 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PostApiController.class)
-class PostApiControllerTest extends AbstractRestDocs {
+@WebMvcTest(PostCommandApiController.class)
+class PostCommandApiControllerTest extends AbstractRestDocs {
     @MockBean
     private RegisterPostUseCase registerPostUseCase;
     @MockBean
     private DeletePostUseCase deletePostUseCase;
-    @MockBean
-    private DetailPostQuery detailPostQuery;
     private static String BASE_URL = "/api/v1/posts";
 
     @Test
@@ -108,42 +107,5 @@ class PostApiControllerTest extends AbstractRestDocs {
                .andExpect(status().isOk());
     }
     
-    @Test
-    @DisplayName("게시글 상세 조회 API 테스트")
-    void detailApiTest() throws Exception {
-        // given
-        DetailPostQuery.DetailPostDto detailPostDto = new DetailPostQuery.DetailPostDto(1L, 1L, "title",
-                "contents", Category.IT, LocalDateTime.now());
-        given(detailPostQuery.find(anyLong()))
-                .willReturn(detailPostDto);
 
-        // when & then
-        mockMvc.perform(get(BASE_URL + "/{postId}", 1L)
-                       .headers(auth())
-                       .contentType(APPLICATION_JSON)
-               )
-               .andDo(
-                       document(
-                               POST_DETAIL_FIND,
-                               null,
-                               DetailPost.Response.class,
-                               null,
-                               Arrays.asList(
-                                       fieldDescriptor("result.status", STRING, "결과"),
-                                       fieldDescriptor("body.postId", NUMBER, "게시글 id"),
-                                       fieldDescriptor("body.memberId", NUMBER, "작성자 id"),
-                                       fieldDescriptor("body.title", STRING, "제목"),
-                                       fieldDescriptor("body.contents", STRING, "본문"),
-                                       fieldDescriptor("body.category", STRING, "카테고리"),
-                                       fieldDescriptor("body.createdAt", STRING, "생성일시"),
-                                       fieldDescriptor("body.editAble", BOOLEAN, "수정 가능 여부"),
-                                       fieldDescriptor("body.deleteAble", BOOLEAN, "삭제 가능 여부")
-                               ),
-                               List.of(
-                                       parameterDescriptor("postId", SimpleType.INTEGER, "게시글 id")
-                               )
-                       )
-               )
-               .andExpect(status().isOk());
-    }
 }

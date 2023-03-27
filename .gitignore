@@ -176,4 +176,7 @@ database
 
 src/main/resources/static/docs/
 
-src/main/generated/
+src/main/generated
+
+src/test/java/com/devwinter/postservice/bulk
+src/test/resources/application-test.yml

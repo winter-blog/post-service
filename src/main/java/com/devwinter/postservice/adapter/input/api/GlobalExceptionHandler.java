@@ -35,4 +35,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(messageBody);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<BaseResponse<?>> exceptionHandler(Exception e) {
+        log.error("ExceptionHandler: ", e);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(BaseResponse.error(e.getMessage()));
+    }
 }

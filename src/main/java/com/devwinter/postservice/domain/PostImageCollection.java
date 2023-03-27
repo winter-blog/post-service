@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class PostImageCollection {
@@ -14,5 +15,19 @@ public class PostImageCollection {
     @Builder
     private PostImageCollection(List<PostImage> postImages) {
         this.postImages = postImages;
+    }
+
+    public String getThumbNailPath() {
+        if(postImages.isEmpty()) {
+            return null;
+        }
+
+        return postImages.get(0).getPath();
+    }
+
+    public boolean hasThumbNail() {
+        if(postImages.isEmpty()) {
+            return false;
+        } else return !Objects.isNull(postImages.get(0).getPath());
     }
 }

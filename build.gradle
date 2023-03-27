@@ -48,8 +48,18 @@ dependencies {
 
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
 
+    // easy-random
+    testImplementation 'org.jeasy:easy-random-core:5.0.0'
+    implementation 'net.datafaker:datafaker:1.8.0'
+
+    // feign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
     // File 처리 관련 라이브러리
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
+    // 마크다운 관련 라이브러리
+    implementation 'org.commonmark:commonmark:0.18.0'
 
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
