@@ -2,8 +2,10 @@ package com.devwinter.postservice.adapter.output.aws;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.devwinter.postservice.application.port.output.RemoveImagePort;
 import com.devwinter.postservice.application.port.output.UploadImagePort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,7 @@ import java.io.InputStream;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AwsS3ImageAdapter implements UploadImagePort {
+public class AwsS3ImageAdapter implements UploadImagePort, RemoveImagePort {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     @Value("${cloud.aws.s3.post-image-prefix}")
@@ -54,5 +56,15 @@ public class AwsS3ImageAdapter implements UploadImagePort {
         } catch (IOException e) {
             throw new FileUploadException();
         }
+    }
+
+    @Override
+    public boolean existImage(String filePath) {
+        return amazonS3Client.doesObjectExist(bucket, filePath);
+    }
+
+    @Override
+    public void remove(String filePath) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
     }
 }

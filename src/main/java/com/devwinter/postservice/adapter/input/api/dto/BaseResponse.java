@@ -14,6 +14,9 @@ public class BaseResponse<T> {
         return new BaseResponse<>(Result.success(message), body);
     }
 
+    public static <T> BaseResponse<T> success() {
+        return new BaseResponse<>(Result.success(null), null);
+    }
     public static <T> BaseResponse<T> success(T body) {
         return new BaseResponse<>(Result.success(null), body);
     }
