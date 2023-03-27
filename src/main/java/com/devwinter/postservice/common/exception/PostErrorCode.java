@@ -19,7 +19,8 @@ public enum PostErrorCode {
     MEMBER_ID_REQUIRED(HttpStatus.BAD_REQUEST, "회원 id는 필수 입니다."),
     POST_ID_REQUIRED(HttpStatus.BAD_REQUEST, "게시글 id는 필수 입니다."),
     POST_NOT_AUTHORITY(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다.")
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다."),
+    POST_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "삭제할 이미지가 AWS S3에 존재하지 않습니다.")
     ;
     private final HttpStatus httpStatus;
     private final String message;
