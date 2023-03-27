@@ -2,6 +2,7 @@ package com.devwinter.postservice.adapter.input.api.document;
 
 public enum PostApiDocumentInfo {
     IMAGE_UPLOAD("이미지", "이미지 업로드", "이미지 업로드", "이미지 업로드 API", true),
+    IMAGE_REMOVE("이미지", "이미지 제거", "이미지 제거", "이미지 제거 API", true),
     POST_REGISTER("게시글", "게시글 등록", "게시글 등록", "게시글 등록 API", true),
     POST_DELETE("게시글", "게시글 삭제", "게시글 삭제", "게시글 삭제 API", true),
     POST_DETAIL_FIND("게시글", "게시글 상세 조회", "게시글 상세 조회", "게시글 상세 조회 API", true),
