@@ -1,10 +1,7 @@
 package com.devwinter.postservice.application.port.input;
 
 import com.devwinter.postservice.common.exception.PostException;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
 
 import static com.devwinter.postservice.common.exception.PostErrorCode.*;
 
