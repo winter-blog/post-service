@@ -23,7 +23,7 @@ public class PostEntityQueryAdapter implements LoadPostDetailPort, LoadPostListP
     public Post load(Long postId) {
         PostEntity postEntity = postEntityQueryRepository.findByPostId(postId)
                                                          .orElseThrow(() -> new PostException(POST_NOT_FOUND));
-        return entityToDomain(postEntity);
+        return entityToDomain(postEntity, false);
     }
 
     @Override
@@ -31,34 +31,36 @@ public class PostEntityQueryAdapter implements LoadPostDetailPort, LoadPostListP
         List<PostEntity> postEntities = postEntityQueryRepository.findByPostsCursorBase(key, size);
 
         return postEntities.stream()
-                           .map(this::entityToDomain)
+                           .map(p -> entityToDomain(p, true))
                            .collect(Collectors.toList());
     }
 
-    private Post entityToDomain(PostEntity postEntity) {
-        return Post.builder()
-                   .id(new PostId(postEntity.getId()))
-                   .memberId(new MemberId(postEntity.getMemberId()))
-                   .title(postEntity.getTitle())
-                   .contents(postEntity.getContents())
-                   .category(postEntity.getCategory())
-                   .deleted(postEntity.isDeleted())
-                   .createdAt(postEntity.getCreatedAt())
-                   .modifiedAt(postEntity.getModifiedAt())
-                   .deletedAt(postEntity.getDeletedAt())
-                   .postImageCollection(PostImageCollection.builder()
-                                                           .postImages(postEntity.getPostImageCollection()
-                                                                                 .getPostImages()
-                                                                                 .stream()
-                                                                                 .map(
-                                                                                         p -> PostImage.builder()
-                                                                                                       .path(p.getPath())
-                                                                                                       .orderNumber(p.getOrderNumber())
-                                                                                                       .build()
-                                                                                 )
-                                                                                 .toList())
-                                                           .build())
+    private Post entityToDomain(PostEntity postEntity, boolean isImageLoad) {
+        Post.PostBuilder postBuilder = Post.builder()
+                                           .id(new PostId(postEntity.getId()))
+                                           .memberId(new MemberId(postEntity.getMemberId()))
+                                           .title(postEntity.getTitle())
+                                           .contents(postEntity.getContents())
+                                           .category(postEntity.getCategory())
+                                           .deleted(postEntity.isDeleted())
+                                           .createdAt(postEntity.getCreatedAt())
+                                           .modifiedAt(postEntity.getModifiedAt())
+                                           .deletedAt(postEntity.getDeletedAt());
 
-                   .build();
+        if (isImageLoad) {
+            postBuilder.postImageCollection(PostImageCollection.builder()
+                                                               .postImages(postEntity.getPostImageCollection()
+                                                                                     .getPostImages()
+                                                                                     .stream()
+                                                                                     .map(
+                                                                                             p -> PostImage.builder()
+                                                                                                           .path(p.getPath())
+                                                                                                           .orderNumber(p.getOrderNumber())
+                                                                                                           .build()
+                                                                                     )
+                                                                                     .toList())
+                                                               .build());
+        }
+        return postBuilder.build();
     }
 }
