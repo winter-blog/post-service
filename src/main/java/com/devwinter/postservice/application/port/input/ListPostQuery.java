@@ -1,8 +1,5 @@
 package com.devwinter.postservice.application.port.input;
 
-import com.devwinter.postservice.application.port.output.LoadMemberInfoPort;
-import com.devwinter.postservice.domain.Post;
-
 import java.time.LocalDateTime;
 import java.util.List;
 public interface ListPostQuery {

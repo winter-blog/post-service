@@ -1,5 +1,6 @@
 package com.devwinter.postservice.application.port.input;
 
+import com.devwinter.postservice.application.port.output.LoadMemberInfoPort;
 import com.devwinter.postservice.domain.Category;
 import com.devwinter.postservice.domain.Post;
 import lombok.AccessLevel;
@@ -17,10 +18,12 @@ public interface DetailPostQuery {
             String title,
             String contents,
             Category category,
-            LocalDateTime createdAt
+            LocalDateTime createdAt,
+            String nickName,
+            String profile
     ) {
 
-        public static DetailPostDto of(Post post) {
+        public static DetailPostDto of(Post post, LoadMemberInfoPort.MemberInfoDto memberInfoDto) {
             return DetailPostDto.builder()
                                 .postId(post.getId().value())
                                 .memberId(post.getMemberId().value())
@@ -28,6 +31,8 @@ public interface DetailPostQuery {
                                 .contents(post.getContents())
                                 .category(post.getCategory())
                                 .createdAt(post.getCreatedAt())
+                                .nickName(memberInfoDto.nickName())
+                                .profile(memberInfoDto.profile())
                                 .build();
         }
     }

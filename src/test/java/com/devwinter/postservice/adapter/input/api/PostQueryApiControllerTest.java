@@ -46,7 +46,7 @@ class PostQueryApiControllerTest extends AbstractRestDocs {
     void detailApiTest() throws Exception {
         // given
         DetailPostQuery.DetailPostDto detailPostDto = new DetailPostQuery.DetailPostDto(1L, 1L, "title",
-                "contents", Category.IT, LocalDateTime.now());
+                "contents", Category.IT, LocalDateTime.now(), "nickName", "profile");
         given(detailPostQuery.find(anyLong()))
                 .willReturn(detailPostDto);
 
@@ -70,7 +70,9 @@ class PostQueryApiControllerTest extends AbstractRestDocs {
                                        fieldDescriptor("body.category", STRING, "카테고리"),
                                        fieldDescriptor("body.createdAt", STRING, "생성일시"),
                                        fieldDescriptor("body.editAble", BOOLEAN, "수정 가능 여부"),
-                                       fieldDescriptor("body.deleteAble", BOOLEAN, "삭제 가능 여부")
+                                       fieldDescriptor("body.deleteAble", BOOLEAN, "삭제 가능 여부"),
+                                       fieldDescriptor("body.nickName", STRING, "작성자 닉네임"),
+                                       fieldDescriptor("body.profile", STRING, "작성자 프로필")
                                ),
                                List.of(
                                        parameterDescriptor("postId", SimpleType.INTEGER, "게시글 id")

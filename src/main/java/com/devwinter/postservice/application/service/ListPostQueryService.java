@@ -1,7 +1,7 @@
 package com.devwinter.postservice.application.service;
 
 import com.devwinter.postservice.application.port.input.ListPostQuery;
-import com.devwinter.postservice.application.port.output.LoadMemberInfoPort;
+import com.devwinter.postservice.application.port.output.LoadMemberMultipleInfoPort;
 import com.devwinter.postservice.application.port.output.LoadPostListPort;
 import com.devwinter.postservice.common.QueryService;
 import com.devwinter.postservice.domain.Post;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.devwinter.postservice.application.port.output.LoadMemberInfoPort.MemberInfoDto;
+import static com.devwinter.postservice.application.port.output.LoadMemberMultipleInfoPort.MemberInfoDto;
 
 
 @QueryService
@@ -24,7 +24,7 @@ import static com.devwinter.postservice.application.port.output.LoadMemberInfoPo
 public class ListPostQueryService implements ListPostQuery {
 
     private final LoadPostListPort loadPostListPort;
-    private final LoadMemberInfoPort loadMemberInfoPort;
+    private final LoadMemberMultipleInfoPort loadMemberMultipleInfoPort;
     private final Parser parser;
     private final TextContentRenderer textContentRenderer;
     @Value("${cloud.aws.s3.base-url}")
@@ -41,7 +41,7 @@ public class ListPostQueryService implements ListPostQuery {
                                               .value())
                                    .collect(Collectors.toSet());
 
-        Map<Long, MemberInfoDto> memberInfoDtoMap = loadMemberInfoPort.load(memberIds);
+        Map<Long, MemberInfoDto> memberInfoDtoMap = loadMemberMultipleInfoPort.load(memberIds);
 
         var nextKey = posts.stream()
                            .mapToLong(p -> p.getId().value())

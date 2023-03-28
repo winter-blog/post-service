@@ -19,6 +19,8 @@ public class DetailPost {
         private String contents;
         private String category;
         private String createdAt;
+        private String nickName;
+        private String profile;
 
         public static BaseResponse<DetailPost.AnonymousResponse> success(DetailPostDto detailPostDto) {
             return BaseResponse.success(create(detailPostDto));
@@ -32,7 +34,9 @@ public class DetailPost {
                     detailPostDto.contents(),
                     detailPostDto.category()
                                  .getDescription(),
-                    StringConverter.localDateTimeToLocalDateTimeString(detailPostDto.createdAt()));
+                    StringConverter.localDateTimeToLocalDateString(detailPostDto.createdAt()),
+                    detailPostDto.nickName(),
+                    detailPostDto.profile());
         }
     }
 
@@ -48,7 +52,9 @@ public class DetailPost {
                     anonymousResponse.title,
                     anonymousResponse.contents,
                     anonymousResponse.category,
-                    anonymousResponse.createdAt
+                    anonymousResponse.createdAt,
+                    anonymousResponse.nickName,
+                    anonymousResponse.profile
             );
 
             if(Objects.equals(memberId, anonymousResponse.memberId)) {
