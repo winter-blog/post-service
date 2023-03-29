@@ -6,6 +6,8 @@ import com.devwinter.postservice.application.port.output.LoadPostListPort;
 import com.devwinter.postservice.common.QueryService;
 import com.devwinter.postservice.domain.Post;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.time.StopWatch;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.text.TextContentRenderer;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.devwinter.postservice.application.port.output.LoadMemberMultipleInfoPort.MemberInfoDto;
 
 
+@Slf4j
 @QueryService
 @RequiredArgsConstructor
 public class ListPostQueryService implements ListPostQuery {
@@ -32,16 +35,26 @@ public class ListPostQueryService implements ListPostQuery {
     @Value("${cloud.aws.s3.post-image-prefix}")
     private String basePrefix;
 
+    private final StopWatch stopWatch = new StopWatch();
     @Override
     public ListPostQueryResultDto query(CursorBaseCommand command) {
-        List<Post> posts = loadPostListPort.load(command.key(), command.size());
+        stopWatch.reset();
 
+
+        stopWatch.start();
+        List<Post> posts = loadPostListPort.load(command.key(), command.size());
+        stopWatch.stop();
+        log.info("post list query seconds: {}", stopWatch);
+
+        stopWatch.reset();
         Set<Long> memberIds = posts.stream()
                                    .map(p -> p.getMemberId()
                                               .value())
                                    .collect(Collectors.toSet());
-
+        stopWatch.start();
         Map<Long, MemberInfoDto> memberInfoDtoMap = loadMemberMultipleInfoPort.load(memberIds);
+        stopWatch.stop();
+        log.info("member list query seconds: {}", stopWatch);
 
         var nextKey = posts.stream()
                            .mapToLong(p -> p.getId().value())
