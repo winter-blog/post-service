@@ -55,7 +55,7 @@ class PostEntityQueryRepositoryImpl implements PostEntityQueryRepository {
     }
 
     private BooleanExpression isIdLessThan(Long key) {
-        if (key != null) {
+        if (key != null && key != -1) {
             return postEntity.id.lt(key);
         }
         return null;
