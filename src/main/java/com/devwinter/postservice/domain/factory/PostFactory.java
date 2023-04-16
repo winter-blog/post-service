@@ -17,6 +17,7 @@ public class PostFactory {
                                                                    .stream()
                                                                    .map(i -> PostImage.builder()
                                                                                       .path(i)
+                                                                                      .orderNumber(images.indexOf(i) + 1)
                                                                                       .build())
                                                                    .collect(Collectors.toList()))
                                                            .build())

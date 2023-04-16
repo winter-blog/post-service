@@ -40,11 +40,9 @@ class RegisterPostUseCaseTest {
     @DisplayName("게시글 등록 시 이미지가 없는 경우 테스트")
     void registerPostCommandImageEmptyValidateTest() {
         RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete()
-                                                                                 .images(null)
                                                                                  .build();
         assertNotNull(command.category());
         assertNotNull(command.title());
         assertNotNull(command.contents());
-        assertThat(command.images().isEmpty()).isTrue();
     }
 }

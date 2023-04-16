@@ -10,17 +10,16 @@ import java.util.Objects;
 import static com.devwinter.postservice.common.exception.PostErrorCode.*;
 
 public interface RegisterPostUseCase {
-    Long register(Long memberId, RegisterPostCommand command);
+    Long register(Long memberId, RegisterPostCommand command, List<String> totalImages);
 
 
-    record RegisterPostCommand (String title, String contents, String category, List<String> images) {
+    record RegisterPostCommand (String title, String contents, String category) {
 
         @Builder
-        public RegisterPostCommand(String title, String contents, String category, List<String> images) {
+        public RegisterPostCommand(String title, String contents, String category) {
             this.title = title;
             this.contents = contents;
             this.category = category;
-            this.images = (images != null) ? images : Collections.emptyList();
             validateSelf();
         }
 

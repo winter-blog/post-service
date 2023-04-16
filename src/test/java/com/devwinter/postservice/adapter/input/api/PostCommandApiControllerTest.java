@@ -45,7 +45,7 @@ class PostCommandApiControllerTest extends AbstractRestDocs {
         // given
         CreatePost.Request request = new CreatePost.Request("title", "contents", "IT", Arrays.asList("1.png", "2.png"));
 
-        given(registerPostUseCase.register(anyLong(), any()))
+        given(registerPostUseCase.register(anyLong(), any(), any()))
                 .willReturn(1L);
 
         // when & then
