@@ -24,7 +24,6 @@ public class CreatePost {
                                                           .title(title)
                                                           .contents(contents)
                                                           .category(category)
-                                                          .images(images)
                                                           .build();
         }
     }

@@ -17,6 +17,7 @@ class PostImageMapper {
                                                                          .stream()
                                                                          .map(i -> PostImageValueObject.builder()
                                                                                                        .path(i.getPath())
+                                                                                                       .orderNumber(i.getOrderNumber())
                                                                                                        .build())
                                                                          .collect(Collectors.toList()))
                                           .build();

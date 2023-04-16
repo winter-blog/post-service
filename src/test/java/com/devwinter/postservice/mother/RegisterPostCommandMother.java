@@ -11,7 +11,6 @@ public class RegisterPostCommandMother {
                                                       .title("post title")
                                                       .contents("post contents")
                                                       .category(Category.IT.name())
-                                                      .images(List.of("image1.png", "image2.png", "image3.png"))
                 ;
     }
 }

@@ -1,6 +1,8 @@
 package com.devwinter.postservice.application.service;
 
+import com.devwinter.postservice.application.markdown.MarkdownAnalyze;
 import com.devwinter.postservice.application.port.input.RegisterPostUseCase;
+import com.devwinter.postservice.application.port.input.RemoveImageUseCase;
 import com.devwinter.postservice.application.port.output.SavePostPort;
 import com.devwinter.postservice.domain.Post;
 import com.devwinter.postservice.mother.PostMother;
@@ -13,8 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
@@ -25,6 +31,10 @@ class RegisterPostServiceTest {
 
     @Mock
     private SavePostPort savePostPort;
+    @Mock
+    private MarkdownAnalyze markdownAnalyze;
+    @Mock
+    private RemoveImageUseCase removeImageUseCase;
 
     @InjectMocks
     private RegisterPostService registerPostService;
@@ -36,12 +46,14 @@ class RegisterPostServiceTest {
         RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete().build();
         Post post = PostMother.complete().build();
         Long memberId = 1L;
+        List<String> images = new ArrayList<>();
 
         given(savePostPort.save(any())).willReturn(post);
+        given(markdownAnalyze.getImages(anyString())).willReturn(new ArrayList<>());
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
         // when
-        Long postId = registerPostService.register(memberId, command);
+        Long postId = registerPostService.register(memberId, command, images);
 
         // then
         then(savePostPort).should().save(postArgumentCaptor.capture());
@@ -50,8 +62,6 @@ class RegisterPostServiceTest {
         assertThat(postArgumentCaptor.getValue().getContents()).isEqualTo(command.contents());
         assertThat(postArgumentCaptor.getValue().getMemberId().value()).isEqualTo(memberId);
         assertThat(postArgumentCaptor.getValue().getCategory().name()).isEqualTo(command.category());
-        assertThat(postArgumentCaptor.getValue().getPostImageCollection().getPostImages().size())
-                .isEqualTo(command.images().size());
         assertThat(postArgumentCaptor.getValue().isDeleted()).isFalse();
         assertThat(postId).isEqualTo(post.getId().value());
     }
@@ -60,15 +70,17 @@ class RegisterPostServiceTest {
     @DisplayName("게시글 저장 시 이미지가 없는 경우 테스트")
     void registerImageEmptyTest() {
         // given
-        RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete().images(null).build();
+        RegisterPostUseCase.RegisterPostCommand command = RegisterPostCommandMother.complete().build();
         Post post = PostMother.complete().build();
         Long memberId = 1L;
+        List<String> images = new ArrayList<>();
 
         given(savePostPort.save(any())).willReturn(post);
+        given(markdownAnalyze.getImages(anyString())).willReturn(new ArrayList<>());
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
 
         // when
-        Long postId = registerPostService.register(memberId, command);
+        Long postId = registerPostService.register(memberId, command, images);
 
         // then
         then(savePostPort).should().save(postArgumentCaptor.capture());

@@ -1,5 +1,6 @@
 package com.devwinter.postservice.application.service;
 
+import com.devwinter.postservice.application.markdown.MarkdownAnalyze;
 import com.devwinter.postservice.application.port.input.ListPostQuery;
 import com.devwinter.postservice.application.port.output.LoadMemberMultipleInfoPort;
 import com.devwinter.postservice.application.port.output.LoadPostListPort;
@@ -8,8 +9,6 @@ import com.devwinter.postservice.domain.Post;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.StopWatch;
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
 import org.commonmark.renderer.text.TextContentRenderer;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -28,7 +27,7 @@ public class ListPostQueryService implements ListPostQuery {
 
     private final LoadPostListPort loadPostListPort;
     private final LoadMemberMultipleInfoPort loadMemberMultipleInfoPort;
-    private final Parser parser;
+    private final MarkdownAnalyze markdownAnalyze;
     private final TextContentRenderer textContentRenderer;
     @Value("${cloud.aws.s3.base-url}")
     private String baseUrl;
@@ -43,6 +42,9 @@ public class ListPostQueryService implements ListPostQuery {
 
         stopWatch.start();
         List<Post> posts = loadPostListPort.load(command.key(), command.size());
+        if(posts.isEmpty()) {
+            return null;
+        }
         stopWatch.stop();
         log.info("post list query seconds: {}", stopWatch);
 
@@ -77,8 +79,6 @@ public class ListPostQueryService implements ListPostQuery {
     }
 
     private String getPlainContents(Post post) {
-        Node document = parser.parse(post.getContents());
-        String render = textContentRenderer.render(document);
-        return render.replaceAll("(\r\n|\r|\n|\n\r)", ""); // 개행문자 제거
+        return markdownAnalyze.getPlainContents(post.getContents());
     }
 }

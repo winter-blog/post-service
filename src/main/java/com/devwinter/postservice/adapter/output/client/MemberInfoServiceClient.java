@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Map;
 @FeignClient(name = "member-service", configuration = FeignClientConfig.class)
+// @FeignClient(value = "http://localhost:8085", configuration = FeignClientConfig.class)
 public interface MemberInfoServiceClient {
     @GetMapping("/api/v1/members/internal/info/{memberIds}/multiple")
     Map<Long, LoadMemberMultipleInfoPort.MemberInfoDto> getMemberMultipleInfo(@PathVariable("memberIds") List<Long> memberIds);
