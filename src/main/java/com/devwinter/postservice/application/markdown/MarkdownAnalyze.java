@@ -39,7 +39,7 @@ public class MarkdownAnalyze {
         String noImageTags = markdown.replaceAll(patternImageTags, "");
 
         String patternSpecialCharacters = "[^\\p{L}\\p{N}\\p{Z}]+";
-        return noImageTags.replaceAll(patternSpecialCharacters, "").replaceAll("\\s", "");
+        return noImageTags.replaceAll(patternSpecialCharacters, "");
     }
 
     private String extractContentInsideParentheses(String input) {
