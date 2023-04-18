@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 public class PostImageCollection {
@@ -22,7 +23,12 @@ public class PostImageCollection {
             return null;
         }
 
-        return postImages.get(0).getPath();
+        Optional<PostImage> first = postImages.stream()
+                                              .filter(i -> i.getOrderNumber()
+                                                            .equals(1))
+                                              .findFirst();
+
+        return first.map(PostImage::getPath).orElse(null);
     }
 
     public boolean hasThumbNail() {

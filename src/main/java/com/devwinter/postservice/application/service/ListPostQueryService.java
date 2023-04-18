@@ -34,29 +34,19 @@ public class ListPostQueryService implements ListPostQuery {
     @Value("${cloud.aws.s3.post-image-prefix}")
     private String basePrefix;
 
-    private final StopWatch stopWatch = new StopWatch();
     @Override
     public ListPostQueryResultDto query(CursorBaseCommand command) {
-        stopWatch.reset();
 
-
-        stopWatch.start();
         List<Post> posts = loadPostListPort.load(command.key(), command.size());
         if(posts.isEmpty()) {
             return null;
         }
-        stopWatch.stop();
-        log.info("post list query seconds: {}", stopWatch);
 
-        stopWatch.reset();
         Set<Long> memberIds = posts.stream()
                                    .map(p -> p.getMemberId()
                                               .value())
                                    .collect(Collectors.toSet());
-        stopWatch.start();
         Map<Long, MemberInfoDto> memberInfoDtoMap = loadMemberMultipleInfoPort.load(memberIds);
-        stopWatch.stop();
-        log.info("member list query seconds: {}", stopWatch);
 
         var nextKey = posts.stream()
                            .mapToLong(p -> p.getId().value())

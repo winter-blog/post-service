@@ -47,8 +47,8 @@ class PostEntityQueryRepositoryImpl implements PostEntityQueryRepository {
                 .from(postEntity)
                 .leftJoin(postEntity.postImageCollection.postImages, postImageValueObject).fetchJoin()
                 .where(
-                        postEntity.id.in(postEntityIds),
-                        postImageValueObject.orderNumber.eq(1)
+                        postEntity.id.in(postEntityIds)
+                        //postImageValueObject.orderNumber.eq(1)
                 )
                 .orderBy(postEntity.id.desc())
                 .fetch();
